@@ -94,6 +94,42 @@ input[type='range'] {
   font-size: 0.8em;
 }
 
+#next-months {
+  position: absolute;
+  display: grid;
+  grid-template-rows: 1.05fr 0.5fr 0.4fr;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-flow: row;
+  grid-gap: 6% 2%;
+  width: 74%;
+  height: var(--h);
+  left: 23.5%;
+  top: 11%;
+  --h: 74%;
+}
+#next-months > :nth-child(-n + 4) {
+  margin-top: 22%;
+}
+#next-months > :nth-child(6) {
+  margin-top: 18%;
+}
+#next-months > :nth-child(7) {
+  margin-top: 8%;
+}
+
+#next-months > :nth-child(1) {
+  grid-row: 1 / -1;
+}
+#next-months > :nth-child(5) {
+  grid-row: 2 / -1;
+  margin-top: 18%;
+}
+#next-months > :nth-child(8) {
+  grid-row: 2 / -1;
+  grid-column: 4;
+  margin-top: 2%;
+}
+
 #past-months .placeholder-1 {
   height: 30%;
   width: 10vw;
