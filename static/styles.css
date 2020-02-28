@@ -94,31 +94,66 @@ input[type='range'] {
   font-size: 0.8em;
 }
 
-.placeholder {
+#past-months .placeholder-1 {
+  height: 30%;
+  width: 10vw;
   float: left;
 }
 
-#past-months .row-1 .placeholder {
-  height: 30%;
-  width: 10vw;
-}
-
-#past-months .row-2 .placeholder {
+#past-months .placeholder-2 {
   height: 30%;
   width: 20vw;
+  float: left;
 }
 
-#past-months .row-3 .placeholder {
+#past-months .placeholder-3 {
   height: 39%;
   width: 12.5vw;
+  float: left;
 }
 
-#past-months .row-4 .placeholder {
+#past-months .placeholder-4 {
   height: 37%;
   width: 12vw;
+  float: left;
 }
 
-#past-months .row-5 .placeholder {
+#past-months .placeholder-5 {
   height: 40%;
   width: 18vw;
+  float: left;
+}
+
+.retro-fields {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 23%;
+  left: 2%;
+  width: 17.5%;
+  height: 80%;
+}
+
+.retro-fields > :nth-child(1) {
+  height: 22%;
+}
+
+#next-months-container .retro-fields > :nth-child(2) {
+  margin-top: 32%;
+  height: 27%;
+}
+
+#next-months-container .retro-fields > :nth-child(3) {
+  margin-top: 27%;
+  height: 18%;
+}
+
+#find-future-container .retro-fields > :nth-child(2) {
+  margin-top: 37%;
+  height: 26%;
+}
+
+#find-future-container .retro-fields > :nth-child(3) {
+  margin-top: 29%;
+  height: 18%;
 }
