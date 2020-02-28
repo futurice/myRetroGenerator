@@ -1,5 +1,7 @@
 * {
   box-sizing: border-box;
+  font-family: sans-serif;
+  margin: 0;
 }
 
 html {
@@ -8,4 +10,66 @@ html {
 
 img {
   width: 100%;
+}
+
+#n-months {
+  position: absolute;
+  left: 16.25%;
+  top: 1.5%;
+  font-size: 3em;
+}
+
+#past-months-container {
+  position: relative;
+  background-image: url('../static/ULP_Toolkit_page_1.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 0;
+  padding-top: 70.76%;
+}
+
+#past-months {
+  position: absolute;
+  display: grid;
+  grid-template-rows: 21% 19.5% 18% 19% 14%;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  grid-row-gap: 2%;
+  grid-column-gap: 1%;
+  top: 15.5%;
+  left: 3%;
+  width: 82.5%;
+  height: 76%;
+
+  font-size: 0.6em;
+}
+
+.placeholder {
+  float: left;
+}
+
+#past-months .row-1 .placeholder {
+  height: 30%;
+  width: 10vw;
+}
+
+#past-months .row-2 .placeholder {
+  height: 30%;
+  width: 20vw;
+}
+
+#past-months .row-3 .placeholder {
+  height: 39%;
+  width: 12.5vw;
+}
+
+#past-months .row-4 .placeholder {
+  height: 37%;
+  width: 12vw;
+}
+
+#past-months .row-5 .placeholder {
+  height: 40%;
+  width: 18vw;
 }
