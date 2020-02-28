@@ -24,6 +24,48 @@ body p {
   text-align: justify;
 }
 
+input[type='range'] {
+  position: absolute;
+  width: 2%;
+  -webkit-appearance: slider-vertical;
+}
+
+#retro-career-path {
+  top: 20.25%;
+  right: 6.8%;
+  height: 23%;
+}
+
+#retro-appreciation {
+  top: 20.25%;
+  right: 4.8%;
+  height: 23%;
+}
+
+#retro-life {
+  top: 20.25%;
+  right: 2.65%;
+  height: 23%;
+}
+
+#retro-projects {
+  top: 47.75%;
+  right: 6.8%;
+  height: 21.4%;
+}
+
+#retro-impact {
+  top: 47.75%;
+  right: 4.8%;
+  height: 21.4%;
+}
+
+#retro-role {
+  top: 47.75%;
+  right: 2.65%;
+  height: 21.4%;
+}
+
 #past-months-container {
   background-image: url('/static/ULP_Toolkit_page_1.svg');
 }
