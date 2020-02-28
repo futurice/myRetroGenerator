@@ -82,7 +82,7 @@ input[type='range'] {
   position: absolute;
   display: grid;
   grid-template-rows: 21% 19.5% 18% 19% 14%;
-  grid-auto-columns: 1fr;
+  grid-auto-columns: minmax(auto, 50%);
   grid-auto-flow: column;
   grid-row-gap: 2%;
   grid-column-gap: 2%;
