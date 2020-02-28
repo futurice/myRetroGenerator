@@ -4,29 +4,36 @@
   margin: 0;
 }
 
-html {
-  width: 100%;
-}
-
-img {
-  width: 100%;
-}
-
 #n-months {
   position: absolute;
-  left: 16.25%;
-  top: 1.5%;
+  left: 16vw;
+  top: 1%;
   font-size: 3em;
 }
 
-#past-months-container {
+.container {
   position: relative;
-  background-image: url('../static/ULP_Toolkit_page_1.svg');
   background-size: contain;
   background-repeat: no-repeat;
   width: 100%;
   height: 0;
   padding-top: 70.76%;
+}
+
+body p {
+  text-align: justify;
+}
+
+#past-months-container {
+  background-image: url('/static/ULP_Toolkit_page_1.svg');
+}
+
+#next-months-container {
+  background-image: url('/static/ULP_Toolkit_page_2.svg');
+}
+
+#find-future-container {
+  background-image: url('/static/ULP_Toolkit_page_3.svg');
 }
 
 #past-months {
@@ -36,13 +43,13 @@ img {
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
   grid-row-gap: 2%;
-  grid-column-gap: 1%;
+  grid-column-gap: 2%;
   top: 15.5%;
   left: 3%;
   width: 82.5%;
   height: 76%;
 
-  font-size: 0.6em;
+  font-size: 0.8em;
 }
 
 .placeholder {
