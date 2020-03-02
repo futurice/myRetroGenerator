@@ -7,7 +7,7 @@
 #n-months {
   position: absolute;
   left: 16vw;
-  top: 1%;
+  top: 2%;
   font-size: 3em;
 }
 
@@ -76,6 +76,54 @@ input[type='range'] {
 
 #find-future-container {
   background-image: url('/static/ULP_Toolkit_page_3.svg');
+}
+
+#vision {
+  display: flex;
+  position: absolute;
+  top: 19%;
+  left: 45.8%;
+  height: 23.5%;
+  width: 48%;
+}
+
+#vision > * {
+  width: 49%;
+}
+#vision > :nth-child(2) {
+  margin-left: 2%;
+}
+
+#change {
+  position: absolute;
+  top: 67%;
+  left: 25%;
+  height: 25%;
+  width: 18%;
+}
+
+#impact-future {
+  position: absolute;
+  top: 56%;
+  left: 55.5%;
+  height: 15%;
+  width: 13%;
+}
+
+#learning-future {
+  position: absolute;
+  top: 56%;
+  left: 69.5%;
+  height: 15%;
+  width: 13%;
+}
+
+#why-important {
+  position: absolute;
+  top: 79%;
+  left: 60%;
+  height: 6%;
+  width: 19.5%;
 }
 
 #past-months {
