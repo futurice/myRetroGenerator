@@ -24,10 +24,8 @@ default-extensions:
 dependencies:
   - base >= 4.7 && < 5
   - aeson
-  - aeson-pretty
   - mtl
   - pandoc
-  - pandoc-types
   - shake
   - slick
   - text

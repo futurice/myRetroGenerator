@@ -6,12 +6,13 @@
     <link href="/static/styles.css" rel="stylesheet" />
   </head>
   <body>
+    {{#pastMonths}}
     <div id="past-months-container" class="container">
-      <span id="n-months">{{ pastMonths.numMonths }}</span>
+      <span id="n-months">{{ numMonths }}</span>
       <input
         type="range"
         id="retro-career-path"
-        value="{{ pastMonths.sliderGrowth }}"
+        value="{{ sliderGrowth }}"
         max="10"
         min="1"
         orient="vertical"
@@ -19,7 +20,7 @@
       <input
         type="range"
         id="retro-appreciation"
-        value="{{ pastMonths.sliderAppreciation }}"
+        value="{{ sliderAppreciation }}"
         max="10"
         min="1"
         orient="vertical"
@@ -27,7 +28,7 @@
       <input
         type="range"
         id="retro-life"
-        value="{{ pastMonths.sliderLife }}"
+        value="{{ sliderLife }}"
         max="10"
         min="1"
         orient="vertical"
@@ -35,7 +36,7 @@
       <input
         type="range"
         id="retro-projects"
-        value="{{ pastMonths.sliderProjects }}"
+        value="{{ sliderProjects }}"
         max="10"
         min="1"
         orient="vertical"
@@ -43,7 +44,7 @@
       <input
         type="range"
         id="retro-impact"
-        value="{{ pastMonths.sliderImpact }}"
+        value="{{ sliderImpact }}"
         max="10"
         min="1"
         orient="vertical"
@@ -51,92 +52,38 @@
       <input
         type="range"
         id="retro-role"
-        value="{{ pastMonths.sliderRole }}"
+        value="{{ sliderRole }}"
         max="10"
         min="1"
         orient="vertical"
       />
 
       <div id="past-months">
+        {{#projects}}
         <div>
           <div class="placeholder-1"></div>
-          <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
-          </p>
+          {{{ done }}}
         </div>
         <div>
           <div class="placeholder-2"></div>
-          <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua.
-          </p>
+          {{{ happiness }}}
         </div>
         <div>
           <div class="placeholder-3"></div>
-          <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam.
-          </p>
+          {{{ yourImpact }}}
         </div>
         <div>
           <div class="placeholder-4"></div>
-          <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum.
-          </p>
+          {{{ learnt }}}
         </div>
         <div>
           <div class="placeholder-5"></div>
-          <p>
-            lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. at vero eos et accusam et justo duo dolores
-            et ea rebum. stet clita kasd gubergren, no sea takimata sanctus est
-            lorem ipsum dolor sit amet. lorem ipsum dolor sit amet.
-          </p>
+          {{{ feedback }}}
         </div>
-        <p>
-          lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua. at vero eos et accusam et justo duo dolores et ea
-          rebum. stet clita kasd gubergren, no sea takimata sanctus est lorem
-          ipsum dolor sit amet. lorem ipsum dolor sit amet, consetetur
-          sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-          dolore magna aliquyam erat, sed diam voluptua. at vero eos et accusam
-          et justo duo dolores et ea rebum. stet clita kasd gubergren, no sea
-          takimata sanctus est lorem ipsum dolor sit amet.
-        </p>
-
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
-        <p>Test</p>
+        {{/projects}}
       </div>
     </div>
+    {{/pastMonths}}
     <div id="next-months-container" class="container">
       <div class="retro-fields">
         <div>

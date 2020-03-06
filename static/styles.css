@@ -170,31 +170,31 @@ input[type='range'] {
   margin-top: -8%;
 }
 
-#past-months .placeholder-1 {
+#past-months:nth-child(1) .placeholder-1 {
   height: 15%;
   width: 10vw;
   float: left;
 }
 
-#past-months .placeholder-2 {
+#past-months:nth-child(2) .placeholder-2 {
   height: 15%;
   width: 20vw;
   float: left;
 }
 
-#past-months .placeholder-3 {
+#past-months:nth-child(3) .placeholder-3 {
   height: 15%;
   width: 12.5vw;
   float: left;
 }
 
-#past-months .placeholder-4 {
+#past-months:nth-child(4) .placeholder-4 {
   height: 15%;
   width: 12vw;
   float: left;
 }
 
-#past-months .placeholder-5 {
+#past-months:nth-child(5) .placeholder-5 {
   height: 17%;
   width: 18vw;
   float: left;

@@ -3,7 +3,6 @@ module Main where
 import Control.Monad (forM)
 import Data (MyRetro (..), PastMonths (..), Project (..), Slider)
 import Data.Aeson (Value (..), toJSON)
-import Data.Aeson.Encode.Pretty (encodePretty)
 import Data.Char (isDigit)
 import Data.Text (Text, isPrefixOf, pack, stripPrefix, unpack)
 import Development.Shake (Action, ShakeOptions (..), Verbosity (Verbose), liftIO, readFile', shakeOptions, writeFile')
@@ -13,7 +12,6 @@ import Slick (compileTemplate', substitute)
 import Slick.Pandoc (defaultHtml5Options, defaultMarkdownOptions, flattenMeta)
 import Text.Pandoc (Block (..), Inline (..), Pandoc (..), PandocIO, readMarkdown, runIO, writeHtml5String)
 import Text.Pandoc.Shared (stringify)
-import Text.Pandoc.UTF8 (toStringLazy)
 import Text.Read (readMaybe)
 
 path :: FilePath
@@ -27,7 +25,7 @@ outputPath = "../build/index.html"
 
 buildRules :: Action ()
 buildRules = do
-  document@(doc, meta) <- readRetro path
+  (doc, meta) <- readRetro path
   retro <- case parseRetro doc of
     Just r -> renderPandoc r
     Nothing -> fail "Error while parsing my retro"
