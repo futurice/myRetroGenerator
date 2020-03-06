@@ -82,8 +82,7 @@ parseSliders = do
               SoftBreak -> False
               _ -> True
           )
-      s <- get'
-      case s of
+      get' >>= \case
         SoftBreak : ys -> put' ys
         _ -> pure ()
       pure xs
