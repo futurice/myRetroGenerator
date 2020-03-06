@@ -1,0 +1,38 @@
+name: generator
+version: 0.1.0.0
+homepage: https://github.com/futurice/myRetroGenerator
+license: MIT
+author: Jan van Brügge
+maintainer: jan.van.brugge@futurice.com
+copyright: 2020 Jan van Brügge
+category: Web
+
+ghc-options: -O2 -threaded -Wall -Wcompat
+
+default-extensions:
+  - DeriveAnyClass
+  - DeriveGeneric
+  - DerivingStrategies
+  - FlexibleInstances
+  - GeneralizedNewtypeDeriving
+  - LambdaCase
+  - OverloadedStrings
+  - ScopedTypeVariables
+  - TypeFamilies
+  - ViewPatterns
+
+dependencies:
+  - aeson
+  - aeson-pretty
+  - base >= 4.7 && < 5
+  - mtl
+  - pandoc
+  - pandoc-types
+  - shake
+  - slick
+  - text
+
+executables:
+  generator:
+    source-dirs: src
+    main: Main.hs

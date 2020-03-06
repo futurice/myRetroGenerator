@@ -1,0 +1,40 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 4d41af8fc6ae1985754a093ad4af9decae24d0eb644926aa87989e3fc6f11788
+
+name:           generator
+version:        0.1.0.0
+category:       Web
+homepage:       https://github.com/futurice/myRetroGenerator
+author:         Jan van Brügge
+maintainer:     jan.van.brugge@futurice.com
+copyright:      2020 Jan van Brügge
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+
+executable generator
+  main-is: Main.hs
+  other-modules:
+      Data
+      Parser
+      Paths_generator
+  hs-source-dirs:
+      src
+  default-extensions: DeriveAnyClass DeriveGeneric DerivingStrategies FlexibleInstances GeneralizedNewtypeDeriving LambdaCase OverloadedStrings ScopedTypeVariables TypeFamilies ViewPatterns
+  ghc-options: -O2 -threaded -Wall -Wcompat
+  build-depends:
+      aeson
+    , aeson-pretty
+    , base >=4.7 && <5
+    , mtl
+    , pandoc
+    , pandoc-types
+    , shake
+    , slick
+    , text
+  default-language: Haskell2010
