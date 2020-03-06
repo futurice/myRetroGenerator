@@ -2,39 +2,67 @@ module Main where
 
 import Control.Monad (forM)
 import Data (MyRetro (..), PastMonths (..), Project (..), Slider)
-import Data.Aeson (Value)
+import Data.Aeson (Value (..), toJSON)
+import Data.Aeson.Encode.Pretty (encodePretty)
 import Data.Char (isDigit)
 import Data.Text (Text, isPrefixOf, pack, stripPrefix, unpack)
-import Development.Shake (Action, ShakeOptions (..), Verbosity (Verbose), liftIO, readFile', shakeOptions)
+import Development.Shake (Action, ShakeOptions (..), Verbosity (Verbose), liftIO, readFile', shakeOptions, writeFile')
 import Development.Shake.Forward (shakeArgsForward)
 import Parser (Parser, embed, get', head', put', runParser, takeWhile', takeWhileM)
+import Slick (compileTemplate', substitute)
 import Slick.Pandoc (defaultHtml5Options, defaultMarkdownOptions, flattenMeta)
 import Text.Pandoc (Block (..), Inline (..), Pandoc (..), PandocIO, readMarkdown, runIO, writeHtml5String)
 import Text.Pandoc.Shared (stringify)
+import Text.Pandoc.UTF8 (toStringLazy)
 import Text.Read (readMaybe)
 
 path :: FilePath
 path = "../Example.md"
 
+templatePath :: FilePath
+templatePath = "../template/index.html"
+
+outputPath :: FilePath
+outputPath = "../build/index.html"
+
 buildRules :: Action ()
 buildRules = do
-  document@(doc, _) <- readRetro path
-  liftIO $ print document
-  liftIO $ print $ parseRetro doc
+  document@(doc, meta) <- readRetro path
+  retro <- case parseRetro doc of
+    Just r -> renderPandoc r
+    Nothing -> fail "Error while parsing my retro"
+  template <- compileTemplate' templatePath
+  let indexHTML = unpack $ substitute template $ combine meta (toJSON retro)
+  writeFile' outputPath indexHTML
 
 main :: IO ()
 main = shakeArgsForward options buildRules
   where
     options = shakeOptions {shakeVerbosity = Verbose, shakeLintInside = ["\\"]}
 
+combine :: Value -> Value -> Value
+combine (Object m1) (Object m2) = Object $ m1 <> m2
+combine _ _ = error "Expected object"
+
+htmlWriter :: Pandoc -> PandocIO Text
+htmlWriter = writeHtml5String defaultHtml5Options
+
+renderPandoc :: MyRetro Pandoc -> Action (MyRetro Text)
+renderPandoc (MkMyRetro past) = do
+  ps <- mapM renderProject $ projects past
+  pure $ MkMyRetro $ past {projects = ps}
+  where
+    w = unPandocM . htmlWriter
+    renderProject (MkProject a b c d e) = MkProject <$> w a <*> w b <*> w c <*> w d <*> w e
+
 readRetro :: FilePath -> Action ([Block], Value)
 readRetro p = do
   file <- pack <$> readFile' p
   Pandoc meta blocks <- unPandocM $ readMarkdown defaultMarkdownOptions file
-  meta' <- flattenMeta (writeHtml5String defaultHtml5Options) meta
+  meta' <- flattenMeta htmlWriter meta
   pure (blocks, meta')
 
-parseRetro :: [Block] -> Maybe MyRetro
+parseRetro :: [Block] -> Maybe (MyRetro Pandoc)
 parseRetro = runParser $ do
   past <- parsePastMonths
   pure $ MkMyRetro past
@@ -42,7 +70,7 @@ parseRetro = runParser $ do
 readNumber :: Text -> Text -> Maybe Int
 readNumber prefix x = readMaybe . takeWhile isDigit . unpack =<< stripPrefix prefix x
 
-parsePastMonths :: Parser [Block] PastMonths
+parsePastMonths :: Parser [Block] (PastMonths Pandoc)
 parsePastMonths = do
   Header 1 _ (stringify -> h1) <- head'
   n <- embed $ readNumber "My past " h1
@@ -87,7 +115,7 @@ parseSliders = do
         _ -> pure ()
       pure xs
 
-parseProject :: Parser [Block] Project
+parseProject :: Parser [Block] (Project Pandoc)
 parseProject = do
   [a, b, c, d, e] <- forM [1 .. 5] $ \(_ :: Int) -> do
     Header 3 _ _ <- head'

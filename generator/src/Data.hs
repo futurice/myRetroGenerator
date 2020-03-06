@@ -1,28 +1,32 @@
 module Data (Slider, MyRetro (..), PastMonths (..), Project (..)) where
 
-import Text.Pandoc (Pandoc (..))
+import Data.Aeson (ToJSON)
+import GHC.Generics (Generic)
 
-newtype Slider = Slider Int
+newtype Slider = MkSlider Int
   deriving stock (Show)
-  deriving newtype (Ord, Eq)
+  deriving newtype (Ord, Eq, ToJSON)
 
 instance Bounded Slider where
-  minBound = Slider 1
-  maxBound = Slider 10
+  minBound = MkSlider 1
+  maxBound = MkSlider 10
 
 instance Enum Slider where
-  toEnum x | x >= 1 && x <= 10 = Slider x
+  toEnum x | x >= 1 && x <= 10 = MkSlider x
   toEnum _ = error "Enum out of bounds"
 
-  fromEnum (Slider x) = x
+  fromEnum (MkSlider x) = x
 
-data MyRetro = MkMyRetro PastMonths
-  deriving stock (Show)
+data MyRetro a
+  = MkMyRetro
+      {pastMonths :: PastMonths a}
+  deriving stock (Show, Generic)
+  deriving anyclass (ToJSON)
 
-data PastMonths
+data PastMonths a
   = MkPastMonths
       { numMonths :: Int,
-        projects :: [Project],
+        projects :: [Project a],
         sliderProject :: Slider,
         sliderImpact :: Slider,
         sliderRole :: Slider,
@@ -30,14 +34,16 @@ data PastMonths
         sliderAppreciation :: Slider,
         sliderLife :: Slider
       }
-  deriving stock (Show)
+  deriving stock (Show, Generic)
+  deriving anyclass (ToJSON)
 
-data Project
+data Project a
   = MkProject
-      { done :: Pandoc,
-        happiness :: Pandoc,
-        yourImpact :: Pandoc,
-        learnt :: Pandoc,
-        feedback :: Pandoc
+      { done :: a,
+        happiness :: a,
+        yourImpact :: a,
+        learnt :: a,
+        feedback :: a
       }
-  deriving stock (Show)
+  deriving stock (Show, Generic)
+  deriving anyclass (ToJSON)

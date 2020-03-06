@@ -7,11 +7,11 @@
   </head>
   <body>
     <div id="past-months-container" class="container">
-      <span id="n-months">6</span>
+      <span id="n-months">{{ pastMonths.numMonths }}</span>
       <input
         type="range"
         id="retro-career-path"
-        value="7"
+        value="{{ pastMonths.sliderGrowth }}"
         max="10"
         min="1"
         orient="vertical"
@@ -19,7 +19,7 @@
       <input
         type="range"
         id="retro-appreciation"
-        value="7"
+        value="{{ pastMonths.sliderAppreciation }}"
         max="10"
         min="1"
         orient="vertical"
@@ -27,7 +27,7 @@
       <input
         type="range"
         id="retro-life"
-        value="7"
+        value="{{ pastMonths.sliderLife }}"
         max="10"
         min="1"
         orient="vertical"
@@ -35,7 +35,7 @@
       <input
         type="range"
         id="retro-projects"
-        value="7"
+        value="{{ pastMonths.sliderProjects }}"
         max="10"
         min="1"
         orient="vertical"
@@ -43,7 +43,7 @@
       <input
         type="range"
         id="retro-impact"
-        value="7"
+        value="{{ pastMonths.sliderImpact }}"
         max="10"
         min="1"
         orient="vertical"
@@ -51,7 +51,7 @@
       <input
         type="range"
         id="retro-role"
-        value="7"
+        value="{{ pastMonths.sliderRole }}"
         max="10"
         min="1"
         orient="vertical"

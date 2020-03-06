@@ -22,9 +22,9 @@ default-extensions:
   - ViewPatterns
 
 dependencies:
+  - base >= 4.7 && < 5
   - aeson
   - aeson-pretty
-  - base >= 4.7 && < 5
   - mtl
   - pandoc
   - pandoc-types
