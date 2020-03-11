@@ -1,6 +1,6 @@
 module Main where
 
-import Data (MyRetro (..), PastMonths (..), Project (..), Slider)
+import Data (MyRetro (..), NextMonths (..), PastMonths (..), Project (..), Retro (..), Slider)
 import Data.Aeson (Value (..), toJSON)
 import Data.Char (isDigit)
 import Data.Text (Text, isPrefixOf, pack, stripPrefix, toLower, unpack)
@@ -25,7 +25,7 @@ outputPath = "../build/index.html"
 buildRules :: Action ()
 buildRules = do
   (doc, meta) <- readRetro path
-  retro <- case parseRetro doc of
+  retro <- case parseMyRetro doc of
     Just r -> renderPandoc r
     Nothing -> fail "Error while parsing my retro"
   template <- compileTemplate' templatePath
@@ -45,12 +45,14 @@ htmlWriter :: Pandoc -> PandocIO Text
 htmlWriter = writeHtml5String defaultHtml5Options
 
 renderPandoc :: MyRetro Pandoc -> Action (MyRetro Text)
-renderPandoc (MkMyRetro past) = do
+renderPandoc (MkMyRetro past months) = do
   ps <- mapM renderProject $ projects past
-  pure $ MkMyRetro $ past {projects = ps}
+  nr <- renderRetro $ nextMonthsRetro months
+  pure $ MkMyRetro (past {projects = ps}) (months {nextMonthsRetro = nr})
   where
     w = unPandocM . htmlWriter
     renderProject (MkProject a b c d e) = MkProject <$> w a <*> w b <*> w c <*> w d <*> w e
+    renderRetro (MkRetro a b c) = MkRetro <$> w a <*> w b <*> w c
 
 readRetro :: FilePath -> Action ([Block], Value)
 readRetro p = do
@@ -59,13 +61,32 @@ readRetro p = do
   meta' <- flattenMeta htmlWriter meta
   pure (blocks, meta')
 
-parseRetro :: [Block] -> Maybe (MyRetro Pandoc)
-parseRetro = runParser $ do
+parseMyRetro :: [Block] -> Maybe (MyRetro Pandoc)
+parseMyRetro = runParser $ do
   past <- parsePastMonths
-  pure $ MkMyRetro past
+  months <- parseNextMonths
+  pure $ MkMyRetro past months
 
 readNumber :: Text -> Text -> Maybe Int
 readNumber prefix x = readMaybe . takeWhile isDigit . unpack =<< stripPrefix prefix (toLower x)
+
+parseNextMonths :: Parser [Block] (NextMonths Pandoc)
+parseNextMonths = do
+  Header 1 _ (toLower . stringify -> "my next 6-12 months") <- head'
+  retro <- parseRetro
+  pure $ MkNextMonths retro
+
+parseRetro :: Parser [Block] (Retro Pandoc)
+parseRetro = do
+  Header 2 _ (toLower . stringify -> "retro of the current role/work") <- head'
+  parts <-
+    takeWhileM
+      ( \case
+          Header n _ _ | n <= 2 -> Nothing
+          _ -> Just $ parsePart 3
+      )
+  [a, b, c] <- pure $ take 3 $ parts <> repeat (Pandoc mempty [])
+  pure $ MkRetro a b c
 
 parsePastMonths :: Parser [Block] (PastMonths Pandoc)
 parsePastMonths = do
@@ -91,24 +112,25 @@ parseSliders = do
       n <- embed . readMaybe . unpack $ val
       pure $ toEnum n
 
+parsePart :: Int -> Parser [Block] Pandoc
+parsePart n =
+  Pandoc mempty
+    <$> takeWhile'
+      ( \case
+          Header x _ _ | x <= n -> False
+          _ -> True
+      )
+
 parseProject :: Parser [Block] (Project Pandoc)
 parseProject = do
   parts <-
     takeWhileM
       ( \case
           Header n _ _ | n <= 2 -> Nothing
-          _ -> Just parsePart
+          _ -> Just $ parsePart 3
       )
   [a, b, c, d, e] <- pure $ take 5 $ parts <> repeat (Pandoc mempty [])
   pure $ MkProject a b c d e
-  where
-    parsePart =
-      Pandoc mempty
-        <$> takeWhile'
-          ( \case
-              Header n _ _ | n <= 3 -> False
-              _ -> True
-          )
 
 unPandocM :: PandocIO a -> Action a
 unPandocM p = do

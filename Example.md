@@ -38,3 +38,19 @@ Does this work now?
 | Your growth & career path level                      | 2            |
 | The appreciation from your colleagues and supervisor | 9            |
 | Life in general                                      | 4            |
+
+# My next 6-12 months
+
+## Retro of the current role/work
+
+### Keep doing
+
+I want to keep building awesome stuff
+
+### Do more/start
+
+Start more awesome stuff
+
+### Do less/stop
+
+Nothing, everything works

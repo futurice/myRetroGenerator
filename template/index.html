@@ -83,15 +83,15 @@
         {{/projects}}
       </div>
     </div>
-    {{/pastMonths}}
+    {{/pastMonths}} {{#nextMonths}}
     <div id="next-months-container" class="container">
+      {{#nextMonthsRetro}}
       <div class="retro-fields">
-        <div>
-          <p>Test</p>
-        </div>
-        <div><p>Test2</p></div>
-        <div><p>Test3</p></div>
+        <div>{{{ keepDoing }}}</div>
+        <div>{{{ doMore }}}</div>
+        <div>{{{ doLess }}}</div>
       </div>
+      {{/nextMonthsRetro}}
       <div id="next-months">
         <div><p>Test</p></div>
         <div><p>Test</p></div>
@@ -137,5 +137,6 @@
         </p>
       </div>
     </div>
+    {{/nextMonths}}
   </body>
 </html>
