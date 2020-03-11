@@ -1,16 +1,15 @@
 module Main where
 
-import Control.Monad (forM)
 import Data (MyRetro (..), PastMonths (..), Project (..), Slider)
 import Data.Aeson (Value (..), toJSON)
 import Data.Char (isDigit)
-import Data.Text (Text, isPrefixOf, pack, stripPrefix, unpack)
+import Data.Text (Text, isPrefixOf, pack, stripPrefix, toLower, unpack)
 import Development.Shake (Action, ShakeOptions (..), Verbosity (Verbose), liftIO, readFile', shakeOptions, writeFile')
 import Development.Shake.Forward (shakeArgsForward)
-import Parser (Parser, embed, get', head', put', runParser, takeWhile', takeWhileM)
+import Parser (Parser, embed, get', head', runParser, takeWhile', takeWhileM)
 import Slick (compileTemplate', substitute)
 import Slick.Pandoc (defaultHtml5Options, defaultMarkdownOptions, flattenMeta)
-import Text.Pandoc (Block (..), Inline (..), Pandoc (..), PandocIO, readMarkdown, runIO, writeHtml5String)
+import Text.Pandoc (Block (..), Pandoc (..), PandocIO, readMarkdown, runIO, writeHtml5String)
 import Text.Pandoc.Shared (stringify)
 import Text.Read (readMaybe)
 
@@ -66,19 +65,19 @@ parseRetro = runParser $ do
   pure $ MkMyRetro past
 
 readNumber :: Text -> Text -> Maybe Int
-readNumber prefix x = readMaybe . takeWhile isDigit . unpack =<< stripPrefix prefix x
+readNumber prefix x = readMaybe . takeWhile isDigit . unpack =<< stripPrefix prefix (toLower x)
 
 parsePastMonths :: Parser [Block] (PastMonths Pandoc)
 parsePastMonths = do
   Header 1 _ (stringify -> h1) <- head'
-  n <- embed $ readNumber "My past " h1
+  n <- embed $ readNumber "my past " h1
   projs <-
     takeWhileM
       ( \case
-          Header 2 _ (stringify -> ("Project" `isPrefixOf`) -> True) -> Just parseProject
+          Header 2 _ (toLower . stringify -> ("project" `isPrefixOf`) -> True) -> Just parseProject
           _ -> Nothing
       )
-  Header 2 _ (stringify -> "Retro of the current role/work") <- head'
+  Header 2 _ (toLower . stringify -> "retro of the current role/work") <- head'
   [a, b, c, d, e, f] <- parseSliders
   pure $ MkPastMonths n projs a b c d e f
 
@@ -94,16 +93,22 @@ parseSliders = do
 
 parseProject :: Parser [Block] (Project Pandoc)
 parseProject = do
-  [a, b, c, d, e] <- forM [1 .. 5] $ \(_ :: Int) -> do
-    Header 3 _ _ <- head'
-    content <-
-      takeWhile'
-        ( \case
-            Header n _ _ | n <= 3 -> False
-            _ -> True
-        )
-    pure $ Pandoc mempty content
+  parts <-
+    takeWhileM
+      ( \case
+          Header n _ _ | n <= 2 -> Nothing
+          _ -> Just parsePart
+      )
+  [a, b, c, d, e] <- pure $ take 5 $ parts <> repeat (Pandoc mempty [])
   pure $ MkProject a b c d e
+  where
+    parsePart =
+      Pandoc mempty
+        <$> takeWhile'
+          ( \case
+              Header n _ _ | n <= 3 -> False
+              _ -> True
+          )
 
 unPandocM :: PandocIO a -> Action a
 unPandocM p = do
