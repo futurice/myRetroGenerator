@@ -4,6 +4,10 @@
   margin: 0;
 }
 
+html {
+  font-size: 0.8vw;
+}
+
 #n-months {
   position: absolute;
   left: 16vw;
