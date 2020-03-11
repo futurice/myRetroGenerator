@@ -11,7 +11,10 @@ ghc-options: -O2 -threaded -Wall -Wcompat
 
 default-extensions:
   - DeriveAnyClass
+  - DeriveFoldable
+  - DeriveFunctor
   - DeriveGeneric
+  - DeriveTraversable
   - DerivingStrategies
   - FlexibleInstances
   - GeneralizedNewtypeDeriving

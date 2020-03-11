@@ -22,7 +22,7 @@ data MyRetro a
       { pastMonths :: PastMonths a,
         nextMonths :: NextMonths a
       }
-  deriving stock (Show, Generic)
+  deriving stock (Show, Generic, Functor, Foldable, Traversable)
   deriving anyclass (ToJSON)
 
 data PastMonths a
@@ -36,7 +36,7 @@ data PastMonths a
         sliderAppreciation :: Slider,
         sliderLife :: Slider
       }
-  deriving stock (Show, Generic)
+  deriving stock (Show, Generic, Functor, Foldable, Traversable)
   deriving anyclass (ToJSON)
 
 data NextMonths a
@@ -51,7 +51,7 @@ data NextMonths a
         supportNeeds :: a,
         additionalNotes :: a
       }
-  deriving stock (Show, Generic)
+  deriving stock (Show, Generic, Functor, Foldable, Traversable)
   deriving anyclass (ToJSON)
 
 data Retro a
@@ -60,7 +60,7 @@ data Retro a
         doMore :: a,
         doLess :: a
       }
-  deriving stock (Show, Generic)
+  deriving stock (Show, Generic, Functor, Foldable, Traversable)
   deriving anyclass (ToJSON)
 
 data Project a
@@ -71,5 +71,5 @@ data Project a
         learnt :: a,
         feedback :: a
       }
-  deriving stock (Show, Generic)
+  deriving stock (Show, Generic, Functor, Foldable, Traversable)
   deriving anyclass (ToJSON)

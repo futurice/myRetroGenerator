@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: da6668677300d0a91b50a637ea929369be0664eb0e9b4b083880ebee8522197a
+-- hash: 91feaf072be5604c4bc6a5034072e7601dc51a1761612b4b583d4f4bba1202ea
 
 name:           generator
 version:        0.1.0.0
@@ -21,11 +21,12 @@ executable generator
   main-is: Main.hs
   other-modules:
       Data
+      MarkdownParser
       Parser
       Paths_generator
   hs-source-dirs:
       src
-  default-extensions: DeriveAnyClass DeriveGeneric DerivingStrategies FlexibleInstances GeneralizedNewtypeDeriving LambdaCase OverloadedStrings ScopedTypeVariables TypeFamilies ViewPatterns
+  default-extensions: DeriveAnyClass DeriveFoldable DeriveFunctor DeriveGeneric DeriveTraversable DerivingStrategies FlexibleInstances GeneralizedNewtypeDeriving LambdaCase OverloadedStrings ScopedTypeVariables TypeFamilies ViewPatterns
   ghc-options: -O2 -threaded -Wall -Wcompat
   build-depends:
       aeson
