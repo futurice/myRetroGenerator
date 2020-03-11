@@ -84,34 +84,13 @@ parsePastMonths = do
 
 parseSliders :: Parser [Block] [Slider]
 parseSliders = do
-  Para inlines <- head'
-  embed $ runParser parseInlines inlines
+  Table _ _ _ _ rows <- head'
+  embed $ mapM (runParser parseInline . head . tail) rows
   where
-    parseInlines = do
-      (stringify -> x) <- takeLine
-      a <- embed $ readNumber "Your projects: " x
-      (stringify -> x1) <- takeLine
-      b <- embed $ readNumber "Your impact: " x1
-      (stringify -> x2) <- takeLine
-      c <- embed $ readNumber "Your role & responsibilities: " x2
-      (stringify -> x3) <- takeLine
-      d <- embed $ readNumber "Your growth & career path level: " x3
-      (stringify -> x4) <- takeLine
-      e <- embed $ readNumber "The appreciation from your colleagues and supervisor: " x4
-      (stringify -> x5) <- takeLine
-      f <- embed $ readNumber "Life in general: " x5
-      pure $ map toEnum [a, b, c, d, e, f]
-    takeLine = do
-      xs <-
-        takeWhile'
-          ( \case
-              SoftBreak -> False
-              _ -> True
-          )
-      get' >>= \case
-        SoftBreak : ys -> put' ys
-        _ -> pure ()
-      pure xs
+    parseInline = do
+      [Plain (stringify -> val)] <- get'
+      n <- embed . readMaybe . unpack $ val
+      pure $ toEnum n
 
 parseProject :: Parser [Block] (Project Pandoc)
 parseProject = do
