@@ -1,21 +1,21 @@
 module MarkdownParser (parseMyRetro) where
 
-import Data (MyRetro (..), NextMonths (..), PastMonths (..), Project (..), Retro (..), Slider)
+import Data (Future (..), MyRetro (..), NextMonths (..), PastMonths (..), Project (..), Retro (..), Slider)
 import Data.Char (isDigit)
-import Data.Text (Text, isPrefixOf, stripPrefix, toLower, unpack)
+import Data.Text (isPrefixOf, stripPrefix, toLower, unpack)
 import Parser (Parser, embed, get', head', runParser, takeWhile', takeWhileM)
 import Text.Pandoc (Block (..), Pandoc (..))
 import Text.Pandoc.Shared (stringify)
 import Text.Read (readMaybe)
 
 parseMyRetro :: [Block] -> Maybe (MyRetro Pandoc)
-parseMyRetro = runParser $ do
-  past <- parsePastMonths
-  months <- parseNextMonths
-  pure $ MkMyRetro past months
+parseMyRetro = runParser $ MkMyRetro <$> parsePastMonths <*> parseNextMonths <*> parseFuture
 
-readNumber :: Text -> Text -> Maybe Int
-readNumber prefix x = readMaybe . takeWhile isDigit . unpack =<< stripPrefix prefix (toLower x)
+parseFuture :: Parser [Block] (Future Pandoc)
+parseFuture = do
+  Header 1 _ (toLower . stringify -> "find your future") <- head'
+  retro <- parseRetro
+  pure $ MkFuture retro
 
 parseNextMonths :: Parser [Block] (NextMonths Pandoc)
 parseNextMonths = do
@@ -27,7 +27,7 @@ parseNextMonths = do
 
 parseRetro :: Parser [Block] (Retro Pandoc)
 parseRetro = do
-  Header 2 _ (toLower . stringify -> "retro of the current role/work") <- head'
+  Header 2 _ (toLower . stringify -> ("retro of" `isPrefixOf`) -> True) <- head'
   parts <- parseParts 3
   [a, b, c] <- pure $ take 3 $ parts <> repeat (Pandoc mempty [])
   pure $ MkRetro a b c
@@ -58,9 +58,11 @@ parsePastMonths = do
           Header 2 _ (toLower . stringify -> ("project" `isPrefixOf`) -> True) -> Just parseProject
           _ -> Nothing
       )
-  Header 2 _ (toLower . stringify -> "retro of the current role/work") <- head'
+  Header 2 _ (toLower . stringify -> ("retro of" `isPrefixOf`) -> True) <- head'
   [a, b, c, d, e, f] <- parseSliders
   pure $ MkPastMonths n projs a b c d e f
+  where
+    readNumber prefix x = readMaybe . takeWhile isDigit . unpack =<< stripPrefix prefix (toLower x)
 
 parseSliders :: Parser [Block] [Slider]
 parseSliders = do

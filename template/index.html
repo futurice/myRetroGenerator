@@ -103,14 +103,15 @@
         <div>{{{ additionalNotes }}}</div>
       </div>
     </div>
+    {{/nextMonths}} {{#future}}
     <div id="find-future-container" class="container">
+      {{#careerRetro}}
       <div class="retro-fields">
-        <div>
-          <p>Test</p>
-        </div>
-        <div><p>Test2</p></div>
-        <div><p>Test3</p></div>
+        <div>{{{ keepDoing }}}</div>
+        <div>{{{ doMore }}}</div>
+        <div>{{{ doLess }}}</div>
       </div>
+      {{/careerRetro}}
       <div id="vision">
         <div><p>Test</p></div>
         <div><p>Test2</p></div>
@@ -137,6 +138,6 @@
         </p>
       </div>
     </div>
-    {{/nextMonths}}
+    {{/future}}
   </body>
 </html>

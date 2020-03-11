@@ -86,3 +86,19 @@ G
 ## Additional notes
 
 H
+
+# Find your future
+
+## Retro of my current career
+
+### Keep doing
+
+Yay
+
+### Do more/start
+
+Yay2
+
+### Do less/stop
+
+Yay3

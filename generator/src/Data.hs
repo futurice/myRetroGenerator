@@ -1,4 +1,4 @@
-module Data (Slider, MyRetro (..), PastMonths (..), Project (..), Retro (..), NextMonths (..)) where
+module Data (Slider, MyRetro (..), PastMonths (..), Project (..), Retro (..), NextMonths (..), Future (..)) where
 
 import Data.Aeson (ToJSON)
 import GHC.Generics (Generic)
@@ -20,7 +20,8 @@ instance Enum Slider where
 data MyRetro a
   = MkMyRetro
       { pastMonths :: PastMonths a,
-        nextMonths :: NextMonths a
+        nextMonths :: NextMonths a,
+        future :: Future a
       }
   deriving stock (Show, Generic, Functor, Foldable, Traversable)
   deriving anyclass (ToJSON)
@@ -51,6 +52,12 @@ data NextMonths a
         supportNeeds :: a,
         additionalNotes :: a
       }
+  deriving stock (Show, Generic, Functor, Foldable, Traversable)
+  deriving anyclass (ToJSON)
+
+data Future a
+  = MkFuture
+      {careerRetro :: Retro a}
   deriving stock (Show, Generic, Functor, Foldable, Traversable)
   deriving anyclass (ToJSON)
 
