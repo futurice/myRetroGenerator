@@ -102,3 +102,27 @@ Yay2
 ### Do less/stop
 
 Yay3
+
+## Summarise the needed change
+
+Everything stays as is
+
+## Who do you want to become?
+
+Batman
+
+## Where could you be in the future?
+
+In the batcave
+
+## Your impact
+
+This generator
+
+## Your learning desires
+
+More haskell
+
+## Why important
+
+Quality software

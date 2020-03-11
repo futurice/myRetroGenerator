@@ -15,7 +15,22 @@ parseFuture :: Parser [Block] (Future Pandoc)
 parseFuture = do
   Header 1 _ (toLower . stringify -> "find your future") <- head'
   retro <- parseRetro
-  pure $ MkFuture retro
+  fields <-
+    takeWhileM
+      ( \case
+          Header 2 _ _ -> Just parseField
+          _ -> Nothing
+      )
+  [a, b, c, d, e, f] <- pure $ take 6 $ fields <> repeat mempty
+  pure $ MkFuture retro a b c d e f
+  where
+    parseField =
+      Pandoc mempty
+        <$> takeWhile'
+          ( \case
+              Header n _ _ | n <= 2 -> False
+              _ -> True
+          )
 
 parseNextMonths :: Parser [Block] (NextMonths Pandoc)
 parseNextMonths = do
@@ -29,7 +44,7 @@ parseRetro :: Parser [Block] (Retro Pandoc)
 parseRetro = do
   Header 2 _ (toLower . stringify -> ("retro of" `isPrefixOf`) -> True) <- head'
   parts <- parseParts 3
-  [a, b, c] <- pure $ take 3 $ parts <> repeat (Pandoc mempty [])
+  [a, b, c] <- pure $ take 3 $ parts <> repeat mempty
   pure $ MkRetro a b c
 
 parseParts :: Int -> Parser [Block] [Pandoc]
@@ -77,5 +92,5 @@ parseSliders = do
 parseProject :: Parser [Block] (Project Pandoc)
 parseProject = do
   parts <- parseParts 3
-  [a, b, c, d, e] <- pure $ take 5 $ parts <> repeat (Pandoc mempty [])
+  [a, b, c, d, e] <- pure $ take 5 $ parts <> repeat mempty
   pure $ MkProject a b c d e

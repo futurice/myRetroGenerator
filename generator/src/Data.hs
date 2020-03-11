@@ -57,7 +57,14 @@ data NextMonths a
 
 data Future a
   = MkFuture
-      {careerRetro :: Retro a}
+      { careerRetro :: Retro a,
+        neededChange :: a,
+        wantBecome :: a,
+        whereFuture :: a,
+        impactFuture :: a,
+        learningDesires :: a,
+        whyImportant :: a
+      }
   deriving stock (Show, Generic, Functor, Foldable, Traversable)
   deriving anyclass (ToJSON)
 
