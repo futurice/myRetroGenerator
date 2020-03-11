@@ -54,3 +54,35 @@ Start more awesome stuff
 ### Do less/stop
 
 Nothing, everything works
+
+## My role and expectations
+
+A
+
+## Development goals
+
+B
+
+## How do I know I've succeeded?
+
+C
+
+## Roadmap to your future
+
+D
+
+## Strategic alignment
+
+E
+
+## What do I need to learn
+
+F
+
+## Support needs
+
+G
+
+## Additional notes
+
+H

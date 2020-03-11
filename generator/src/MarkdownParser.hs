@@ -21,19 +21,32 @@ parseNextMonths :: Parser [Block] (NextMonths Pandoc)
 parseNextMonths = do
   Header 1 _ (toLower . stringify -> "my next 6-12 months") <- head'
   retro <- parseRetro
-  pure $ MkNextMonths retro
+  parts <- parseParts 2
+  [a, b, c, d, e, f, g, h] <- pure $ take 8 $ parts <> repeat mempty
+  pure $ MkNextMonths retro a b c d e f g h
 
 parseRetro :: Parser [Block] (Retro Pandoc)
 parseRetro = do
   Header 2 _ (toLower . stringify -> "retro of the current role/work") <- head'
-  parts <-
-    takeWhileM
-      ( \case
-          Header n _ _ | n <= 2 -> Nothing
-          _ -> Just $ parsePart 3
-      )
+  parts <- parseParts 3
   [a, b, c] <- pure $ take 3 $ parts <> repeat (Pandoc mempty [])
   pure $ MkRetro a b c
+
+parseParts :: Int -> Parser [Block] [Pandoc]
+parseParts n =
+  takeWhileM
+    ( \case
+        Header x _ _ | x <= (n - 1) -> Nothing
+        _ -> Just parsePart
+    )
+  where
+    parsePart =
+      Pandoc mempty
+        <$> takeWhile'
+          ( \case
+              Header x _ _ | x <= n -> False
+              _ -> True
+          )
 
 parsePastMonths :: Parser [Block] (PastMonths Pandoc)
 parsePastMonths = do
@@ -59,22 +72,8 @@ parseSliders = do
       n <- embed . readMaybe . unpack $ val
       pure $ toEnum n
 
-parsePart :: Int -> Parser [Block] Pandoc
-parsePart n =
-  Pandoc mempty
-    <$> takeWhile'
-      ( \case
-          Header x _ _ | x <= n -> False
-          _ -> True
-      )
-
 parseProject :: Parser [Block] (Project Pandoc)
 parseProject = do
-  parts <-
-    takeWhileM
-      ( \case
-          Header n _ _ | n <= 2 -> Nothing
-          _ -> Just $ parsePart 3
-      )
+  parts <- parseParts 3
   [a, b, c, d, e] <- pure $ take 5 $ parts <> repeat (Pandoc mempty [])
   pure $ MkProject a b c d e

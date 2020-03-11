@@ -41,7 +41,16 @@ data PastMonths a
 
 data NextMonths a
   = MkNextMonths
-      {nextMonthsRetro :: Retro a}
+      { nextMonthsRetro :: Retro a,
+        myRole :: a,
+        developmentGoals :: a,
+        knowSucceeded :: a,
+        roadmap :: a,
+        alignment :: a,
+        needToLearn :: a,
+        supportNeeds :: a,
+        additionalNotes :: a
+      }
   deriving stock (Show, Generic)
   deriving anyclass (ToJSON)
 

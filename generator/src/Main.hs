@@ -44,12 +44,12 @@ htmlWriter = writeHtml5String defaultHtml5Options
 renderPandoc :: MyRetro Pandoc -> Action (MyRetro Text)
 renderPandoc (MkMyRetro past months) = do
   ps <- mapM renderProject $ projects past
-  nr <- renderRetro $ nextMonthsRetro months
-  pure $ MkMyRetro (past {projects = ps}) (months {nextMonthsRetro = nr})
+  MkMyRetro (past {projects = ps}) <$> renderNextMonths months
   where
     w = unPandocM . htmlWriter
     renderProject (MkProject a b c d e) = MkProject <$> w a <*> w b <*> w c <*> w d <*> w e
     renderRetro (MkRetro a b c) = MkRetro <$> w a <*> w b <*> w c
+    renderNextMonths (MkNextMonths a b c d e f g h i) = MkNextMonths <$> renderRetro a <*> w b <*> w c <*> w d <*> w e <*> w f <*> w g <*> w h <*> w i
 
 readRetro :: FilePath -> Action ([Block], Value)
 readRetro p = do
