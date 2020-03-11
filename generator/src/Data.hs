@@ -27,7 +27,7 @@ data PastMonths a
   = MkPastMonths
       { numMonths :: Int,
         projects :: [Project a],
-        sliderProject :: Slider,
+        sliderProjects :: Slider,
         sliderImpact :: Slider,
         sliderRole :: Slider,
         sliderGrowth :: Slider,

@@ -48,7 +48,7 @@ lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
 
 | Area                                                 | Value (1-10) |
 | ---------------------------------------------------- | ------------ |
-| Your projects                                        | 3            |
+| Your projects                                        | 9            |
 | Your impact                                          | 7            |
 | Your role & responsibilities                         | 5            |
 | Your growth & career path level                      | 2            |
