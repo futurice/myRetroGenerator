@@ -53,7 +53,7 @@ parserOptions =
   info
     (cliParser <**> helper)
     ( fullDesc
-        <> progDesc "Convert a markdown version of myRetro into a single html file"
+        <> progDesc "Convert a markdown version of myRetro into a single html file. See --help for more info"
         <> header "myRetroGenerator - Markdown to HTML"
     )
 
