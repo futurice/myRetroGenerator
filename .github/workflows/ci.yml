@@ -29,7 +29,14 @@ jobs:
 
       - name: Package generator
         run: |
+          mkdir package
           cd generator
-          cp $(stack path --dist-dir)/build/generator/generator ../myRetroGenerator
+          cp $(stack path --dist-dir)/build/generator/generator ../package/myRetroGenerator
           cd ..
-          tar -czvf generator.tar template/ static/ myRetroGenerator
+          cp -r static template package/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: generator-${{ runner.os }}.zip
+          path: package
