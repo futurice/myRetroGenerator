@@ -71,15 +71,15 @@ input[type='range'] {
 }
 
 #past-months-container {
-  background-image: url('/static/ULP_Toolkit_page_1.svg');
+  background-image: url('./ULP_Toolkit_page_1.svg');
 }
 
 #next-months-container {
-  background-image: url('/static/ULP_Toolkit_page_2.svg');
+  background-image: url('./ULP_Toolkit_page_2.svg');
 }
 
 #find-future-container {
-  background-image: url('/static/ULP_Toolkit_page_3.svg');
+  background-image: url('./ULP_Toolkit_page_3.svg');
 }
 
 #vision {
