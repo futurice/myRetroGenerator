@@ -82,10 +82,12 @@ input[type='range'] {
 }
 
 #next-months-container {
+  page-break-before: always;
   background-image: url('./ULP_Toolkit_page_2.svg');
 }
 
 #find-future-container {
+  page-break-before: always;
   background-image: url('./ULP_Toolkit_page_3.svg');
 }
 
