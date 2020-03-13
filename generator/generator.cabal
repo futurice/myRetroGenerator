@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 91feaf072be5604c4bc6a5034072e7601dc51a1761612b4b583d4f4bba1202ea
+-- hash: eb8f59959b51d2df5759104443e47e432211761bd905fb69cdfc6e996415b4c9
 
 name:           generator
 version:        0.1.0.0
@@ -32,6 +32,7 @@ executable generator
       aeson
     , base >=4.7 && <5
     , mtl
+    , optparse-applicative
     , pandoc
     , shake
     , slick

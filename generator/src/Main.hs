@@ -4,33 +4,61 @@ import Data (MyRetro)
 import Data.Aeson (Value (..), toJSON)
 import Data.Text (Text, pack, unpack)
 import Development.Shake (Action, ShakeOptions (..), Verbosity (Verbose), liftIO, readFile', shakeOptions, writeFile')
-import Development.Shake.Forward (shakeArgsForward)
+import Development.Shake.Forward (shakeForward)
 import MarkdownParser (parseMyRetro)
+import Options.Applicative ((<**>), Parser, ParserInfo, argument, execParser, fullDesc, header, help, helper, info, long, metavar, progDesc, short, str, strOption, strOption, value)
 import Slick (compileTemplate', substitute)
 import Slick.Pandoc (defaultHtml5Options, defaultMarkdownOptions, flattenMeta)
 import Text.Pandoc (Block (..), Pandoc (..), PandocIO, readMarkdown, runIO, writeHtml5String)
 
-path :: FilePath
-path = "../Example.md"
-
-templatePath :: FilePath
-templatePath = "../template/index.html"
-
-outputPath :: FilePath
-outputPath = "../build/index.html"
-
-buildRules :: Action ()
-buildRules = do
-  (doc, meta) <- readRetro path
+buildRules :: Options -> Action ()
+buildRules opts = do
+  (doc, meta) <- readRetro (path opts)
   retro <- case parseMyRetro doc of
     Just r -> renderPandoc r
     Nothing -> fail "Error while parsing my retro"
-  template <- compileTemplate' templatePath
+  template <- compileTemplate' $ templatePath opts
   let indexHTML = unpack $ substitute template $ combine meta (toJSON retro)
-  writeFile' outputPath indexHTML
+  writeFile' (outputPath opts) indexHTML
+
+data Options
+  = MkOptions
+      { path :: FilePath,
+        templatePath :: FilePath,
+        outputPath :: FilePath
+      }
+  deriving stock (Show)
+
+cliParser :: Parser Options
+cliParser =
+  MkOptions
+    <$> argument str (metavar "FILE" <> help "Specify the path of the myRetro markdown file")
+    <*> strOption
+      ( long "templatePath"
+          <> short 't'
+          <> (metavar "FILE")
+          <> help "Specify the mustache template file to use"
+          <> value "template/index.html"
+      )
+    <*> strOption
+      ( long "output"
+          <> short 'o'
+          <> (metavar "FILE")
+          <> help "Specify where the generated html file should be placed"
+          <> value "build/index.html"
+      )
+
+parserOptions :: ParserInfo Options
+parserOptions =
+  info
+    (cliParser <**> helper)
+    ( fullDesc
+        <> progDesc "Convert a markdown version of myRetro into a single html file"
+        <> header "myRetroGenerator - Markdown to HTML"
+    )
 
 main :: IO ()
-main = shakeArgsForward options buildRules
+main = execParser parserOptions >>= shakeForward options . buildRules
   where
     options = shakeOptions {shakeVerbosity = Verbose, shakeLintInside = ["\\"]}
 
