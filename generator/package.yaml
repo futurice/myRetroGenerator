@@ -27,6 +27,7 @@ default-extensions:
 dependencies:
   - base >= 4.7 && < 5
   - aeson
+  - directory
   - mtl
   - optparse-applicative
   - pandoc

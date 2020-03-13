@@ -1,14 +1,17 @@
 module Main where
 
+import Control.Monad (forM_)
 import Data (MyRetro)
 import Data.Aeson (Value (..), toJSON)
 import Data.Text (Text, pack, unpack)
-import Development.Shake (Action, ShakeOptions (..), Verbosity (Verbose), liftIO, readFile', shakeOptions, writeFile')
+import Development.Shake (Action, ShakeOptions (..), Verbosity (Verbose), copyFileChanged, getDirectoryFiles, liftIO, readFile', shakeOptions, writeFile')
+import Development.Shake.FilePath ((</>))
 import Development.Shake.Forward (shakeForward)
 import MarkdownParser (parseMyRetro)
 import Options.Applicative ((<**>), Parser, ParserInfo, argument, execParser, fullDesc, header, help, helper, info, long, metavar, progDesc, short, str, strOption, strOption, value)
 import Slick (compileTemplate', substitute)
 import Slick.Pandoc (defaultHtml5Options, defaultMarkdownOptions, flattenMeta)
+import System.Directory (setCurrentDirectory)
 import Text.Pandoc (Block (..), Pandoc (..), PandocIO, readMarkdown, runIO, writeHtml5String)
 
 buildRules :: Options -> Action ()
@@ -19,13 +22,20 @@ buildRules opts = do
     Nothing -> fail "Error while parsing my retro"
   template <- compileTemplate' $ templatePath opts
   let indexHTML = unpack $ substitute template $ combine meta (toJSON retro)
-  writeFile' (outputPath opts) indexHTML
+  writeFile' (outputPath opts </> "index.html") indexHTML
+  copyStatic opts
+
+copyStatic :: Options -> Action ()
+copyStatic opts = do
+  files <- getDirectoryFiles "" ["static/*"]
+  forM_ files $ \f -> copyFileChanged f (outputPath opts </> f)
 
 data Options
   = MkOptions
       { path :: FilePath,
         templatePath :: FilePath,
-        outputPath :: FilePath
+        outputPath :: FilePath,
+        cwd :: FilePath
       }
   deriving stock (Show)
 
@@ -43,9 +53,15 @@ cliParser =
     <*> strOption
       ( long "output"
           <> short 'o'
-          <> (metavar "FILE")
-          <> help "Specify where the generated html file should be placed"
-          <> value "build/index.html"
+          <> (metavar "DIR")
+          <> help "Specify where the generated html page should be placed"
+          <> value "build"
+      )
+    <*> strOption
+      ( long "cwd"
+          <> (metavar "DIR")
+          <> help "Specify the current working directory"
+          <> value "."
       )
 
 parserOptions :: ParserInfo Options
@@ -58,7 +74,10 @@ parserOptions =
     )
 
 main :: IO ()
-main = execParser parserOptions >>= shakeForward options . buildRules
+main = do
+  opts <- execParser parserOptions
+  setCurrentDirectory $ cwd opts
+  shakeForward options $ buildRules opts
   where
     options = shakeOptions {shakeVerbosity = Verbose, shakeLintInside = ["\\"]}
 
