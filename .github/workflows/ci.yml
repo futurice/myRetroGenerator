@@ -1,0 +1,28 @@
+name: Continous Integration
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  build:
+    name: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        id: cache-stack
+        with:
+          path: ~/.stack
+          key: ${{ runner.os }}-stack-store-${{ hashFiles('generator/generator.cabal') }}
+          restore-keys: |
+            ${{ runner.os }}-stack-store-
+
+      - name: Build generator
+        run: cd generator && stack build
