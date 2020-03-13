@@ -26,3 +26,10 @@ jobs:
 
       - name: Build generator
         run: cd generator && stack build
+
+      - name: Package generator
+        run: |
+          cd generator
+          cp $(stack path --dist-dir)/build/generator/generator ../myRetroGenerator
+          cd ..
+          tar -czvf generator.tar template/ static/ myRetroGenerator
