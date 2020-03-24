@@ -4,7 +4,6 @@ RETRO = MyRetro.md
 TARGET = docs
 
 all: $(RETRO)
-	make html
 	make pdf
 
 html: $(RETRO)
@@ -15,8 +14,7 @@ pdf: $(RETRO)
 	cd $(TARGET) ; \
 	browser-sync start --server --no-open & \
 	sleep 2 ; \
-	google-chrome --headless --disable-gpu --print-to-pdf=myRetro.pdf http://localhost:3000 ; \
-	kill $$(jobs -p)
+	google-chrome --headless --disable-gpu --print-to-pdf=myRetro.pdf http://localhost:3000
 
 watch:
 	cwd=$$(pwd) ; \
