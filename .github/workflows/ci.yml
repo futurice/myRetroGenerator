@@ -37,7 +37,7 @@ jobs:
           cd generator
           cp $(stack path --dist-dir)/build/generator/generator ../package/myRetroGenerator
           cd ..
-          cp -r static template Makefile package/
+          cp -r static template package/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v1
