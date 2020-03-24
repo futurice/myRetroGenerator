@@ -1,5 +1,6 @@
 module Parser (Parser, embed, head', runParser, takeWhile', takeWhileM, get', put') where
 
+import Control.Monad.Fail (MonadFail (..))
 import Control.Monad.State (State, evalState, get, put)
 
 newtype Parser s a = MkParser (State s (Maybe a))
